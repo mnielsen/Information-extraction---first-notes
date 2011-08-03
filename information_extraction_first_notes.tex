@@ -170,6 +170,93 @@ previously found.  In that case, there is only one relevant document,
 and it should (ideally) be the single document returned.  At a minimum
 you need perfect recall (and, ideally, high precision).
 
+Note that for search, precision is not really a precise enough notion
+(!)  The problem is that we intuitively have notions of more and less
+relevant: we want highly relevant things to come up early in the
+search results, and less relevant things to come up later.  I don't
+know how to quantify this.
+
+With the above discussion in mind, it starts to become obvious how
+this applies in more general classification contexts.  Suppose we have
+a large number of photographs.  We're asked: which ones are whales?
+We have an algorithm attempt a classification.  Recall is the fraction
+of (true) whales it correctly ``recalls'', i.e., identifies as whales.
+Precision is the fraction of what it recalls that are, in fact,
+whales.  Ideally, we'd score perfecly on both (i.e., 1.0).  But it's
+pretty clear that we'd be happy with high precision (so nearly
+everything it identifies is, in fact, a whale), and low recall (so it
+misses some whales).
+
+More generally, for any classification tasks, the precision is the
+fraction of \emph{positives} which are \emph{true}: i.e., the fraction
+of positives (``this is a whale'') which are actually correct (``this
+really is a whale'').  The recall is the fraction of the \emph{true}
+things (``this really is a whale'') which are in positive class
+(``this is a whale'').
+
+The article remarks that there is often an inverse relationship
+between precision and recall. We can increase recall by being more
+generous about what documents to return from our search: but we
+decrease precision (more false positives).  We can increase precision
+by being very strict about what documents to return, but lowering
+recall (we'll miss some, getting more false negatives).
+
+Apparently, the two are often combined into a single measure, such as
+the F-measure, or the Matthews correlation coefficient.  It's also
+often the case that in evaluations one tries to fix one quantity, and
+see how to vary the other.
+
+Note that intuitively these notions can be put into good
+correspondence with what it's like to talk with someone about a
+subject: someone has very good recall if they can tell us everything
+relevant to some subject.  But some people with very good recall may
+nonetheless have low precision: they often tell us things which aren't
+really relevant.  The intuitive matchup with pattern recognition and
+classification isn't so good.
+
+Apparently, in binary classification problems, recall is sometimes
+called sensitivity.  This is a good matchup to our intuition: a system
+may be highly sensitive to pictures of whales, for example.
+
+The article also defines these notions using the ``true positive'',
+``false positive'' etc terminology.  This is worth getting comfortable
+with, and so I'll go through it here.  Note that a false negative is
+something that is incorrectly classified as a negative; e.g., it
+\emph{is} a photo of a whale, but is incorrectly classified as not
+being one.  So:
+$$
+\mbox{recall} = \frac{tp}{tp+fn}, 
+$$ 
+since $tp+fn$ is the total number of true instances (whales)1.
+Meanwhile,
+$$
+\mbox{precision} = \frac{tp}{tp+fp},
+$$
+since $tp+fp$ is the total number of things identified as being whales
+by the classifier, regardless of whether they truly are.
+
+The article points out a nice probabilistic interpretation.  The
+recall is the probability that a randomly chosen relevant document
+will be returned in the search.  The precision is that probability
+that a randomly chosen retrieved document is, in fact, relevant.
+
+Of course, all of this is ``just'' terminology.  However, it is worth
+mastering becasue the terminology is so widely used within the field.
+With that said, the terminology imposes one particular way of looking
+at the world, and other ways are possible.  It's worth keeping closely
+in mind that there is a much more fundamental underlying question:
+``What documents should a search system return'', and ``What instances
+should our classifier return as positives?''  It's important to keep
+going back to these more fundamental questions, and to answer them
+anew; recall and precision are only proxies for answers, albeit
+widely-used proxies.
+
+There is a nice quote at the end of the article that points out that
+for web browsing purposes neither high recall nor high precision may
+be of all that much use: all we really want are some relevant
+documents in the top ten search results.  Now, in practice there may
+be other use cases --- e.g., when we want to find a specific page ---
+but this is certainly the case often.
 
 \textbf{Wikipedia article on coreference resolution:}
 
@@ -189,7 +276,8 @@ you need perfect recall (and, ideally, high precision).
 
 Other Wikipedia articles: concept mining; web scraping; nutch;
 enterprise search; semantic translation; TIPSTER; faceted search;
-natural language processing; Matthew Correlation Coefficient.
+natural language processing; Matthew Correlation Coefficient. F1
+score.  Type I and Type II errors.
 
 \section{Papers}
 
