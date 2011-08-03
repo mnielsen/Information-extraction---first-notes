@@ -148,7 +148,28 @@ means clear how one would do this at web scale.
 
 We can think of spam in this context.  What spam does is pollutes your
 search results, returning irrelevant pages, i.e., decreasing
-precision.  But it doesn't necessarily affect recall.
+precision.  But it doesn't necessarily affect recall.  When someone
+says something is ``spammy'' that's really what is meant: it is
+decreasing precision.  ``Good'' advertising doesn't do this: it only
+shows you stuff that is relevant, while ``bad'' advertising decreases
+precision.
+
+It's interesting to consider that television advertising is very low
+precision, while Google's advertising aims to be high precision: i.e.,
+to only show you stuff that is actually relevant.
+
+Coming back to the issue of evaluating precision, this is something
+which in principle we ought to be able to estimate using user click
+data.  It's not so clear, though, how we'd be able to estimate recall.
+My intuition is that users will be much more sensitive to changes in
+precision than to changes in recall.  
+
+There is a use case where the last sentence in the last paragraph is
+definitely not true: when you're trying to find something that you've
+previously found.  In that case, there is only one relevant document,
+and it should (ideally) be the single document returned.  At a minimum
+you need perfect recall (and, ideally, high precision).
+
 
 \textbf{Wikipedia article on coreference resolution:}
 
