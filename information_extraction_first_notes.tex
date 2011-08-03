@@ -105,7 +105,50 @@ Wikipedia article does an interesting job broadening the discussion to
 pattern recognition in general.  Starts with the notion of
 \emph{accuracy}: how often is the correct results returned.  For
 example, if we're shown an image of a whale, how often does an
-algorithm correctly identify it as a whale?
+algorithm correctly identify it as a whale?  Considers precision and
+recall as generalizations.  I'll come back to this point.
+
+Let's recap how it works in information retrieval.  You're given a
+query, $q$, and identify some set $S$ of documents as relevant.  In
+fact, the ``true'' set of relevant document is $S_T$.  The ``correct''
+documents are those in $S \cap S_T$.  So \emph{recall} is the fraction
+of all relevant documents returned: $|S \cap S_T| / |S_T|$.
+\emph{Precision} is the fraction of document returned by the search
+which are truly relevant: $|S \cap S_T| / |S|$.
+
+In other words, recall is the answer to the question ``What fraction
+of truly relevant documents to the query are returned?''  Precision is
+the answer to the question ``What fraction of the returned documents
+are truly relevant to the query?''
+
+It's easy to build an information retrieval system which gets high
+recall: it simply dumps everything.  Unfortunately, this will gives
+low precision: most of the documents won't be truly relevant to the
+query.
+
+It's also (relatively) easy to build an information retrieval system
+which gets high precision: it simply tries to identify a single
+document which is highly likely to be relevant, and returns that.  
+
+Note that the task of building high-precision systems is complicated
+by the fact that some queries are going to be hard to understand.
+Many people might guess that ``President in a black hat'' refers to
+Abraham Lincoln, but an information retrieval system might have
+trouble with this.  So it seems likely that we might get low-precision
+results.  But a sufficiently generous search algorithm might also get
+pretty high recall, since at least \emph{some} webpages will make the
+connection between ``black hat'' and ``Lincoln'', and (hopefully) that
+will allow it to infer that it should return other pages connected to
+Lincoln.
+
+It's worth pointing out that both precision and recall are
+mathematically \emph{ill-defined}.  They depend on human psychology.
+And to evaluate them will require training examples.  It is by no
+means clear how one would do this at web scale.
+
+We can think of spam in this context.  What spam does is pollutes your
+search results, returning irrelevant pages, i.e., decreasing
+precision.  But it doesn't necessarily affect recall.
 
 \textbf{Wikipedia article on coreference resolution:}
 
@@ -125,7 +168,7 @@ algorithm correctly identify it as a whale?
 
 Other Wikipedia articles: concept mining; web scraping; nutch;
 enterprise search; semantic translation; TIPSTER; faceted search;
-natural language processing.
+natural language processing; Matthew Correlation Coefficient.
 
 \section{Papers}
 
