@@ -1,0 +1,147 @@
+\documentstyle[12pt]{article}
+
+\title{Information extraction --- first notes}
+\author{Michael Nielsen}
+
+\begin{document}
+
+\maketitle
+
+\textbf{About this document:} This document contains my first notes
+getting a survey overview of the field of information extraction,
+including notions such as entity recognition.  It's unrevised and
+undistilled, and unlikely to be of much use to anyone else.
+
+
+\section{Overview}
+
+\textbf{Wikipedia article on information extraction:} Example is
+extracting reports of company mergers from news wire articles.  Early
+example of a system was JASPER, built for Reuters, with the aim of
+providing financial news to financial traders.  1987-1998: the Message
+Understanding Conferences were seminal.  Support came from DARPA, who
+wished to automate tasks performed by analysts.  It's unclear to me
+how much the semantic web will help --- stuff in ``machine readable''
+form often isn't that much easier to understand than plain text.
+Standard way of thinking: unstructured data -> database.  There are
+all sorts of subtasks: recognizing named entities; detecting
+coferences; extracting relationships.  Not so dissimilar to full-on
+natural language processing! Also includes things like table
+extraction, comment extraction, and terminology extraction.
+Information extraction is also done on media sources other than text.
+Wrappers can be used to extract a particular page's content.  They're
+usually taylored to highly structured collections of pages.
+
+The article claims that there are \textbf{three standard approaches}
+to information extraction: hand-written regular expressions;
+classifiers (Bayes, Maxent); and sequence models.
+
+\textbf{Wikipedia article on text simplification:} This is a procedure
+one applies to a text.  The intent is to preserve meaning, while
+making the text simpler.  It'd be interesting to have an example of
+output from such a system.  One thing which is done is to break
+complex compound sentences down into simple sentences, without
+subordinate clauses.
+
+At least some of this work is being used in science, to extract
+information from papers.
+
+The use of text simplification sets up a pipeline.  We take complex
+sentences, then apply text simplification to produce simple output
+sentences, which can then be understood using a further stage.  It's a
+nice two-part model.  It's unclear to me that this is what we actually
+do when we parse speech (not that that necessarily matters).  One of
+the papers in the area (by Klebanov, Knight and Marcu) introduces a
+notion of Easy Access Sentences: the goal of text simplification is to
+produce such sentences.
+
+\textbf{Wikipedia article on wrappers:}
+
+
+\textbf{Wikipedia article on named entity recognition:}
+
+\textbf{Wikipedia article on Message Understanding Conferences:}
+
+\textbf{Wikipedia article on coreference resolution:}
+
+\textbf{Wikipedia article on relationship extraction:}
+
+\textbf{Wikipedia article on terminology extraction:}
+
+\textbf{Wikipedia article on supervised learning:}
+
+\textbf{Wikipedia article on unsupervised learning:}
+
+\textbf{Wikipedia article on naive Bayes:}
+
+\textbf{Wikipedia article on Hidden Markov Model:}
+
+\textbf{Wikipedia article on Conditional Random Fields:}
+
+Other Wikipedia articles: concept mining; web scraping; nutch;
+enterprise search; semantic translation; TIPSTER; faceted search;
+natural language processing.
+
+\section{Papers}
+
+What are the key papers?
+
+Open information extraction from the web:
+http://portal.acm.org/citation.cfm?id=1409378
+
+Information extraction (Sunita Sarawagi):
+http://portal.acm.org/citation.cfm?id=1498845
+
+Coupled semi-supervised learning for information extraction (Andrew
+Carlson, Justin Betteride, Richard C. Wang, Estevam R. Hruschka, Jr,
+and Tom M. Mitchell): http://portal.acm.org/citation.cfm?id=1718501
+
+Open Information Extraction (Oren Etzioni):
+http://oai.dtic.mil/oai/oai?verb=getRecord\&metadataPrefix=html\&identifier=ADA538482
+
+\textbf{Motivations and methods for text simplification:}
+(R. Chandresekar, Christine Doran, and B. Srinivas, 1996):
+http://portal.acm.org/citation.cfm?id=993361.  This appears to be one
+of the key early papers.  The idea is that instead of parsing a
+sentence, we'll instead use an alternative approach which is simpler
+than full parsing.  They present two approaches: (1) Use a finite
+state group to produce noun and verb groups; (2) Use a supertagging
+model to produce dependency linkages.
+
+\textbf{Banko and Brill:}
+
+\section{Patents}
+
+
+\section{Tools}
+
+What are the standard tools?
+
+\textbf{Apache UIMA:}
+
+\textbf{AlchemyAPI:}
+
+\textbf{NetOwl Extractor:}
+
+\textbf{Tools on Github: matpalm/named-entity-extraction XXX}
+
+\textbf{ReVerb:}
+
+\textbf{GExp:}
+
+\textbf{OpenCalais:}
+
+\textbf{Mallet:}
+
+\textbf{DBpedia Spotlight:}
+
+\textbf{CRF implementations:}
+
+\textbf{General article for text engineering:}
+
+\section{Miscellanea}
+
+\textbf{What's the connection to entity-relationship diagrams, if
+  anything?}
+
+\end{document}
