@@ -7,10 +7,10 @@
 
 \maketitle
 
-\textbf{About this document:} This document contains my first notes
-getting a survey overview of the field of information extraction,
-including notions such as entity recognition.  It's unrevised and
-undistilled, and unlikely to be of much use to anyone else.
+This document contains my first notes getting a survey overview of the
+field of information extraction, including notions such as entity
+recognition.  It's unrevised and undistilled, written solely for
+myself, and unlikely to be of much use to anyone else.
 
 
 \section{Overview}
@@ -55,12 +55,57 @@ the papers in the area (by Klebanov, Knight and Marcu) introduces a
 notion of Easy Access Sentences: the goal of text simplification is to
 produce such sentences.
 
-\textbf{Wikipedia article on wrappers:}
+\textbf{Wikipedia article on wrappers:} Says there are two main
+approaches to wrappers: (1) wrapper induction, and (2) automated data
+extraction.  Wrapper induction starts with a set of manually labelled
+training examples to learn data extraction rules.  The problem, of
+course, is that this requires one to come up with a set of training
+examples, and the system will break when we see examples outside the
+types seen in the training set.  This may occur, for example, when a
+site changes its template.  Automated data extraction tries to
+discover the patterns in webpages without manually labelled training
+data.
 
+\textbf{Wikipedia article on named entity recognition:} Also known as
+entity identification and entity extraction.  The idea is to classify
+atomic elements in text into predefined (really?) categories.  You can
+think of it as a form of annotion, taking unstructured text, and
+beginning to structure it.  For example, the Message Understanding
+Conferences developed a set of standard tags (ENAMEX) that were used
+to categorize the atomic elements in text.  This approach seems
+surprising to me: it doesn't seem scalable, given the very large
+(infinite) number of categories we humans potentially have available.
+It's also true that one atomic element in text may belong to multiple
+categories.
 
-\textbf{Wikipedia article on named entity recognition:}
+The article claims that the best current systems for named entity
+recognition perform at near-human levels of performance.  But it also
+comments that named entity recognition systems which perform well in
+one domain often don't perform well in other domains.  As for machine
+translation there is again a distinction between rule-based and
+statistical model-based systems.  (I wonder which is better?)
 
-\textbf{Wikipedia article on Message Understanding Conferences:}
+At least two hierarchies of named entities have been proposed in the
+literature.  There are BBN categories, with 29 types and 64 subtypes.
+There is an extended hierarchy, due to Sekine, with 200 subtypes.
+
+\textbf{Wikipedia article on Message Understanding Conferences:} The
+conference was organized with many research teams competing against
+one another, with a metrics-based approach.  At the sixth conference
+--- MUC-6 --- the task of recognizing named entities and coreferences
+was added.  For a named entity, all phrases in the text were ``to be
+marked as person, location, organization, time or quantity.''  The MUC
+conferences were associated with DARPA's TIPSTER program, which aimed
+at doing document detection, information extraction, and
+summarization.  TIPSTER was apparently discontinued in 1998.
+
+\textbf{Wikipedia article on precision and recall:} I'm familiar with
+these notions in the context of information retrieval.  But the
+Wikipedia article does an interesting job broadening the discussion to
+pattern recognition in general.  Starts with the notion of
+\emph{accuracy}: how often is the correct results returned.  For
+example, if we're shown an image of a whale, how often does an
+algorithm correctly identify it as a whale?
 
 \textbf{Wikipedia article on coreference resolution:}
 
@@ -108,6 +153,21 @@ than full parsing.  They present two approaches: (1) Use a finite
 state group to produce noun and verb groups; (2) Use a supertagging
 model to produce dependency linkages.
 
+\textbf{Ralph Grisham and Beth Sundheim, Message Understanding
+  Conference - 6: A Brief History:
+  http://acl.ldc.upenn.edu/C/C96/C96-1079.pdf:} A metrics-based
+approach to driving science.  It would be interesting to know how well
+this worked (it's a very clear goal!) and what it missed (may have led
+to a concentration of attention).  MUC-1 is described as being
+exploratory.  MUC-2 crystallized things out.  The first metric is
+\emph{recall}: what fraction of keys were filled out correctly?  And
+\emph{precision:} what fraction of keys that were filled out were
+filled out cooectly?  (Note that precision will always be better than
+recall with this definition.)  This article suggests that it wasn't
+until MUC-5 that it became part of DARPA TIPSTER.  Interestingly,
+MUC-6 broadened the metrics, so that there were several tasks
+participants could focus on.
+
 \textbf{Banko and Brill:}
 
 \section{Patents}
@@ -139,7 +199,25 @@ What are the standard tools?
 
 \textbf{General article for text engineering:}
 
+Stanford CRF-based named entity recognition system.
+
+Apache OpenNLP.
+
 \section{Miscellanea}
+
+\textbf{On silver bullets:} A large number of different ideas and
+algorithms have been used to do information extraction.  Are there
+silver bullet ideas that can be used to solve the information
+extraction problem at one go?  It's certainly true that there are some
+\emph{very good} ideas that let us go far with surprisingly little
+effort.  However, human language has evolved over many thousands of
+years, and has a large amount of inherent complexity, a complexity
+which is in part reflected by the many years we spend learning to
+understand speech, and by the amusing ``obvious'' (actually, not at
+all) mistakes that children often make.  It may be that any system for
+extracting information thus has to reflect this inherent complexity.
+We should aim for big wins, but expecting a silver bullet may be
+expecting too much.
 
 \textbf{What's the connection to entity-relationship diagrams, if
   anything?}
