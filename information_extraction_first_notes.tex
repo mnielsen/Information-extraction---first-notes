@@ -258,7 +258,37 @@ documents in the top ten search results.  Now, in practice there may
 be other use cases --- e.g., when we want to find a specific page ---
 but this is certainly the case often.
 
-\textbf{Wikipedia article on coreference resolution:}
+\textbf{Wikipedia article on coreference:} ``Michael said he would run
+to the store'': in this sentence ``Michael'' and ``he'' both refer to
+the same thing: they are \empph{coferent}.  Note that references are
+frequently ambiguous.  In context, ``he'' might actually refer to
+someone else, if the sentence were part of a larger conversation.
+
+Pronouns obviously need to have their referent disambiguated.  
+
+There are also instances of synonomous noun phrases: ``IBM'' and ``Big
+Blue'' will often have the same referent.
+
+I can see why Lisp is so popular with some in the AI community: we
+don't need so much algorithms as meta-algorithms in order to think
+about these kinds of problems.  Any given approach will have
+limitations; what we want is systems that get better in response to
+feedback.
+
+The article claims there is a tradeoff between precision and
+recall. In this context, I don't quite get it.  Surely all that
+matters is precision: we want to make sure that our phrase, say
+``he'', refers to the right referent, say ``Michael''.  So it would
+seem that precision is all. 
+
+Apparently ``it'' causes all sorts of problems for coreference
+resolution, just because it (!) can be used in so many ways.
+
+The article claims that algorithms for co-reference resolution tend to
+have accuracy in the 75 percent range --- I assume this is a reference
+to precision.
+
+\textbf{Wikipedia article on relationship extraction:}
 
 \textbf{Wikipedia article on relationship extraction:}
 
@@ -277,24 +307,11 @@ but this is certainly the case often.
 Other Wikipedia articles: concept mining; web scraping; nutch;
 enterprise search; semantic translation; TIPSTER; faceted search;
 natural language processing; Matthew Correlation Coefficient. F1
-score.  Type I and Type II errors.
+score.  Type I and Type II errors.  Pleonasm and it.
 
 \section{Papers}
 
 What are the key papers?
-
-Open information extraction from the web:
-http://portal.acm.org/citation.cfm?id=1409378
-
-Information extraction (Sunita Sarawagi):
-http://portal.acm.org/citation.cfm?id=1498845
-
-Coupled semi-supervised learning for information extraction (Andrew
-Carlson, Justin Betteride, Richard C. Wang, Estevam R. Hruschka, Jr,
-and Tom M. Mitchell): http://portal.acm.org/citation.cfm?id=1718501
-
-Open Information Extraction (Oren Etzioni):
-http://oai.dtic.mil/oai/oai?verb=getRecord\&metadataPrefix=html\&identifier=ADA538482
 
 \textbf{Motivations and methods for text simplification:}
 (R. Chandresekar, Christine Doran, and B. Srinivas, 1996):
@@ -319,6 +336,27 @@ recall with this definition.)  This article suggests that it wasn't
 until MUC-5 that it became part of DARPA TIPSTER.  Interestingly,
 MUC-6 broadened the metrics, so that there were several tasks
 participants could focus on.
+
+\textbf{Yifan Li, Petr Musilek, Marek Reformat, and Loren Wyard-Scott:
+  ``Identification of pleonastic it using the web'' (2009):
+  http://www.jair.org/media/2622/live-2622-4362-jair.ps:} Apparently
+this paper makes use of the web as a corpus to do an excellent job of
+identifying pleonastic uses of ``it'' in sentences.  This can help
+with coreferent resolution.
+
+Open information extraction from the web:
+http://portal.acm.org/citation.cfm?id=1409378
+
+Information extraction (Sunita Sarawagi):
+http://portal.acm.org/citation.cfm?id=1498845
+
+Coupled semi-supervised learning for information extraction (Andrew
+Carlson, Justin Betteride, Richard C. Wang, Estevam R. Hruschka, Jr,
+and Tom M. Mitchell): http://portal.acm.org/citation.cfm?id=1718501
+
+Open Information Extraction (Oren Etzioni):
+http://oai.dtic.mil/oai/oai?verb=getRecord\&metadataPrefix=html\&identifier=ADA538482
+
 
 \textbf{Banko and Brill:}
 
