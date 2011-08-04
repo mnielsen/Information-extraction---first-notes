@@ -10,8 +10,10 @@
 This document contains my first notes getting a survey overview of the
 field of information extraction, including notions such as entity
 recognition.  It's unrevised and undistilled, written solely for
-myself, and unlikely to be of much use to anyone else.
-
+myself, and unlikely to be of much use to anyone else.  If for some
+reason you want to look through the notes, that's fine, but they will
+contain lots of errors, misunderstandings, thinking out loud, and so
+on.
 
 \section{Overview}
 
@@ -288,9 +290,14 @@ The article claims that algorithms for co-reference resolution tend to
 have accuracy in the 75 percent range --- I assume this is a reference
 to precision.
 
-\textbf{Wikipedia article on relationship extraction:}
+\textbf{Wikipedia article on relationship extraction:} The article is
+rather incomplete at present.  It focuses on domain ontologies, and
+mentions the extraction of such ontologies from extant sources (e.g.,
+Wikipedia).
 
-\textbf{Wikipedia article on relationship extraction:}
+\textbf{Wikipedia article on Conditional Random Fields:}
+
+\textbf{Wikipedia article on disambiguation:}
 
 \textbf{Wikipedia article on terminology extraction:}
 
@@ -302,16 +309,17 @@ to precision.
 
 \textbf{Wikipedia article on Hidden Markov Model:}
 
-\textbf{Wikipedia article on Conditional Random Fields:}
 
 Other Wikipedia articles: concept mining; web scraping; nutch;
 enterprise search; semantic translation; TIPSTER; faceted search;
 natural language processing; Matthew Correlation Coefficient. F1
-score.  Type I and Type II errors.  Pleonasm and it.
+score.  Type I and Type II errors.  Pleonasm and it.  Data warehouse.
+Business Intelligence [2.0].
 
 \section{Papers}
 
-What are the key papers?
+What are the key papers?  It's worth also sorting out some of the key
+journals, key people, key institutions.
 
 \textbf{Motivations and methods for text simplification:}
 (R. Chandresekar, Christine Doran, and B. Srinivas, 1996):
@@ -342,26 +350,162 @@ participants could focus on.
   http://www.jair.org/media/2622/live-2622-4362-jair.ps:} Apparently
 this paper makes use of the web as a corpus to do an excellent job of
 identifying pleonastic uses of ``it'' in sentences.  This can help
-with coreferent resolution.
+with coreferent resolution.  More generally, this seems like an
+interesting and powerful idea: using the web as training data to help
+in other tasks.
 
-Open information extraction from the web:
-http://portal.acm.org/citation.cfm?id=1409378
+\textbf{Oren Etzionia, Michele Banko, Stephen Soderland, and Daniel
+  S. Weld: ``Open information extraction from the web'' (2008):
+  http://portal.acm.org/citation.cfm?id=1409378} Starts with the idea
+that instead of returning search results, we'll get an automatically
+synthesized overview of what we need to know.  It's an interesting
+motivating vision, but may not be a realistic endpoint.  It seems that
+working on the web is both a blessing and a cure.  It's a curse
+because of the open nature --- anyone can post, and so there is a lot
+of misleading information.  It's a blessing, though, because of the
+enormous scale, which gives us lots of data to use.
 
-Information extraction (Sunita Sarawagi):
-http://portal.acm.org/citation.cfm?id=1498845
+``At the core of an IE [information extraction] system is an
+extractor: it overlooks irrelevant words and phrases and attempts to
+home in on entities and the relationships between them.''  Example:
+``Paris is the stylish capital of France'' might get mapped to (Paris,
+Capital, France).  Note that this example does lose something --- we
+lost the information about Paris being stylish --- but we also gained
+something in terms of being able to make inferences.  
 
-Coupled semi-supervised learning for information extraction (Andrew
+The article identifies three broad methods for information extraction:
+knowledge-based methods; supervised learning; unsupervised learning.
+
+The knowledge-based methods required the use of handcrafted rules,
+tailored to particular domains.  This would obviously require a lot of
+work.  It was popular in the early MUC conferences, which tended to
+narrow the domain of considered documents.  Not portable, not easy to
+scale, without enormous human effort.
+
+Identifies modern IE, beginning with the work of Soderland, Riloff and
+Kim and Moldovan, in the 1990s.  These use supervised learning.
+Identifies some recent advances, including automatic induction of
+features when learning conditional random fields, and using Markov
+logic networks to develop extraction frameworks.  
+
+Identifies KnowItAll as ``the next step'': uses a small number of base
+rules to figure out how to label its own training examples.  Doesn't
+require domain-specific rules.  It's based on a very clever idea:
+using search to train the system.  So, for example, we look for pages
+containing statements like ``X is a country''.  The results are not
+entirely reliable: I just tried ``* is a country'' in Google, and the
+first three results tell me that Africa, Europe and Dondal Rumsfeld
+are all countries.  This is a problem: when are people speaking
+polemically, or ironically, or figuratively?
+
+Next, having identified some candidates, we then query the web to
+figure out just how likely each one is to be correct.  Apparently, the
+rules are constructed so that KnowItAll \emph{iteratively bootstraps}
+its own learning process.
+
+KnowlItAll requires the set of relations to be named by the human user
+in advance.  
+
+It seems that bootstrapping is really helped by starting with a fairly
+trustworthy corpus.  It suggests an approach: start with something
+very trustworthy, and then gradually branch out, adding more and more
+sources, cross-checking and extending in this way. 
+
+Something that I'm noticing as I read is just how important
+classifiers are.  Much of what we're doing is building up a huge array
+of classifiers.  These let us answer membership questions: Is a
+labrador a dog?; Is a sheep a plant?; Is a colour a rectangle?  And so
+on.
+
+We have all these abstractions for dealing with these things.  And yet
+the abstractions are not yet powerful enough to support the tasks that
+we humans do effortlessly.
+
+Often, we apply classifiers in parallel.  In the sentence ``Garth
+Brooks is a country singer'', should think of Garth Brooks as a
+country, or as something else.  If we have two possible
+classifications --- country and country singer --- then we should
+detect both, and then do some kind of resolution.  So it's a two-stage
+process: find possible classifications, then do conflict resolution.
+That problem of conflict resolution is also likely to be quite
+complex.
+
+Let me do some review of what's involved: learning of rules,
+bootstrapping from a starting corpus.  One thing we do is learn what
+the enties / concepts are.  Then, later, we need to do entity
+extraction, and that may involve first figuring out the possible
+entities, and then going through a disambiguation / conflict
+resolution phase.
+
+Next, they talk about \emph{open information extraction}: extraction
+from open-ended sources, like the web.  Some points to note: they can
+do this in any language; they don't rely on having a set of relations
+upfront, but rather infer the relations from the corpus; it's not
+clear what the role of punctuation is, but clearly it's important.
+
+Something I find very striking in all this is how much it relies on
+the subject-verb-object way of expressing knowledge.  That is,
+obviously, tremendously powerful, but it's not clear to me that it's
+really powerful enough.  Still, it's also the kind of thing that seems
+useful to explore and develop.
+
+Something striking about all this is that they're not talking much
+about performance, or how they assess it, beyond occasional mentions
+of precision and recall, without numbers.  This seems problematic.
+
+TextRunner learns the entities, relations, and classes (?) from
+scratch.  It uses conditional random fields.  The idea seems to be to
+build some sort of model by maximizing conditional probabilities in
+some way.  I'd need to see details, but this general idea seems
+attractive to me.  They have something called the Resolver system
+which figures out the probability that two strings are synonomous.
+
+They have run TextRunner on a collection of 120 million web pages,
+extracting 500 million tuples.  The precision of the process exceeds
+75 percent --- in other words, more than 75 percent of the tuples are
+actually correct!  Increasing the size of the corpus apparently
+increases precision.  They say it also increases recall, although in
+this context I'm not sure what that means.
+
+Applications of open information extraction: they provide three:
+question answering; opinion mining; and fact checking.  I can see how
+any of these might be useful in conjunction with human operators.  I
+like their proposal for a fact checker built into a word processor!
+
+I wonder how the relations they extract compare to Cyc?
+
+Summing up: powerful ideas include the notion of doing some sort of
+disambiguation; using the web as an information source to extract
+relations; using Markov chain models and statistical models to make
+inferences about possible relations.  In short, I've got something of
+a map to think about, but really need to dig down into some of the
+details.
+
+\textbf{Oren Etzioni, Anthony Fader, Janara Christensen, Stephen Soderland,
+and Mausam (2011): Open Information Extraction: the Second Generation}
+
+\textbf{Information extraction (Sunita Sarawagi):
+http://portal.acm.org/citation.cfm?id=1498845}
+
+\textbf{Coupled semi-supervised learning for information extraction (Andrew
 Carlson, Justin Betteride, Richard C. Wang, Estevam R. Hruschka, Jr,
-and Tom M. Mitchell): http://portal.acm.org/citation.cfm?id=1718501
+and Tom M. Mitchell): http://portal.acm.org/citation.cfm?id=1718501}
 
-Open Information Extraction (Oren Etzioni):
-http://oai.dtic.mil/oai/oai?verb=getRecord\&metadataPrefix=html\&identifier=ADA538482
+\textbf{Open Information Extraction (Oren Etzioni):
+http://oai.dtic.mil/oai/oai?verb=getRecord\&metadataPrefix=html\&identifier=ADA538482}
 
+\textbf{More sources: http://ai.cs.washington.edu/projects/open-information-extraction}
 
 \textbf{Banko and Brill:}
 
+\textbf{Palantir blog:}
+
 \section{Patents}
 
+
+\section{Concepts and questions} 
+
+Entity-relationship diagrams.
 
 \section{Tools}
 
@@ -393,6 +537,22 @@ Stanford CRF-based named entity recognition system.
 
 Apache OpenNLP.
 
+Cyc.  OpenCyc.
+
+Palantir. 
+
+Wolfram Alpha.
+
+KnowItAll
+
+IntelligenceInWikipedia project
+
+Weka
+
+Guava
+
+TextRunner
+
 \section{Miscellanea}
 
 \textbf{On silver bullets:} A large number of different ideas and
@@ -408,6 +568,29 @@ all) mistakes that children often make.  It may be that any system for
 extracting information thus has to reflect this inherent complexity.
 We should aim for big wins, but expecting a silver bullet may be
 expecting too much.
+
+\textbf{On dealing with uncertainty and issues of credibility:} When
+we do an extraction, e.g., ``Paris is the stylish capital of France''
+-> (Paris, CapitalOf, France), we should associate a probability to
+the resulting assertion.  Actually, we probably need a model of our
+source as well: Is the source trustworthy?  Are they a liar?  How
+could we tell?  Maybe by comparing with other information?
+
+Heuristic: a source is trustworthy if the (old) information we learn
+from it confirms well the information we've learnt from other
+trustworthy sources.
+
+Note that we humans put a tremendous amount of time and effort into
+determining credibility and trustworthiness, and this affects our
+reasoning greatly.  If a chain of reasoning depends on a statement
+whose probability we assess to be intermediate or low, then we need to
+check that statement more carefully.
+
+An additional issue is that often we don't speak in literal terms.
+``New York is the Capital of the World'' doesn't actually quite mean
+(New York, CapitalOf, World), at least not in the same sense as
+(Paris, CapitalOf, France).  And even the most trustworthy and
+credible sources will often contain statements of this sort.
 
 \textbf{What's the connection to entity-relationship diagrams, if
   anything?}
