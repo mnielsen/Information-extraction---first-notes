@@ -8,12 +8,11 @@
 \maketitle
 
 This document contains my first notes getting a survey overview of the
-field of information extraction, including notions such as entity
-recognition.  It's unrevised and undistilled, written solely for
-myself, and unlikely to be of much use to anyone else.  If for some
-reason you want to look through the notes, that's fine, but they will
-contain lots of errors, misunderstandings, thinking out loud, and so
-on.
+field of information extraction.  It's unrevised and undistilled,
+written solely for myself, and unlikely to be of much use to anyone
+else.  If for some reason you want to look through the notes, that's
+fine, but they will contain lots of errors, misunderstandings,
+thinking out loud, and so on.
 
 \section{Overview}
 
@@ -36,7 +35,9 @@ usually taylored to highly structured collections of pages.
 
 The article claims that there are \textbf{three standard approaches}
 to information extraction: hand-written regular expressions;
-classifiers (Bayes, Maxent); and sequence models.
+classifiers (Bayes, Maxent, SVMS, conditional random fields); and
+sequence models.  This is a funny way of dividing stuff up: in a
+sense, the sequence models are examples of classifiers.  
 
 \textbf{Wikipedia article on text simplification:} This is a procedure
 one applies to a text.  The intent is to preserve meaning, while
@@ -124,7 +125,7 @@ the answer to the question ``What fraction of the returned documents
 are truly relevant to the query?''
 
 It's easy to build an information retrieval system which gets high
-recall: it simply dumps everything.  Unfortunately, this will gives
+recall: it simply dumps everything.  Unfortunately, this will give
 low precision: most of the documents won't be truly relevant to the
 query.
 
@@ -145,8 +146,9 @@ Lincoln.
 
 It's worth pointing out that both precision and recall are
 mathematically \emph{ill-defined}.  They depend on human psychology.
-And to evaluate them will require training examples.  It is by no
-means clear how one would do this at web scale.
+And to evaluate them will require training examples.  It's not obvious
+how to do this at web scale, as a single user.  But if you can get a
+lot of users, then you can do all sorts of evaluation experiments.
 
 We can think of spam in this context.  What spam does is pollutes your
 search results, returning irrelevant pages, i.e., decreasing
@@ -172,8 +174,8 @@ previously found.  In that case, there is only one relevant document,
 and it should (ideally) be the single document returned.  At a minimum
 you need perfect recall (and, ideally, high precision).
 
-Note that for search, precision is not really a precise enough notion
-(!)  The problem is that we intuitively have notions of more and less
+Note that for search, precision is not a precise enough notion(!)
+The problem is that we intuitively have notions of more and less
 relevant: we want highly relevant things to come up early in the
 search results, and less relevant things to come up later.  I don't
 know how to quantify this.
@@ -229,7 +231,7 @@ being one.  So:
 $$
 \mbox{recall} = \frac{tp}{tp+fn}, 
 $$ 
-since $tp+fn$ is the total number of true instances (whales)1.
+since $tp+fn$ is the total number of true instances (whales).
 Meanwhile,
 $$
 \mbox{precision} = \frac{tp}{tp+fp},
@@ -262,7 +264,7 @@ but this is certainly the case often.
 
 \textbf{Wikipedia article on coreference:} ``Michael said he would run
 to the store'': in this sentence ``Michael'' and ``he'' both refer to
-the same thing: they are \empph{coferent}.  Note that references are
+the same thing: they are \empph{coreferent}.  Note that references are
 frequently ambiguous.  In context, ``he'' might actually refer to
 someone else, if the sentence were part of a larger conversation.
 
@@ -280,8 +282,8 @@ feedback.
 The article claims there is a tradeoff between precision and
 recall. In this context, I don't quite get it.  Surely all that
 matters is precision: we want to make sure that our phrase, say
-``he'', refers to the right referent, say ``Michael''.  So it would
-seem that precision is all. 
+``he'', refers to the right referent, say ``Michael''.  I don't
+understand what recall means in this context.
 
 Apparently ``it'' causes all sorts of problems for coreference
 resolution, just because it (!) can be used in so many ways.
@@ -295,7 +297,36 @@ rather incomplete at present.  It focuses on domain ontologies, and
 mentions the extraction of such ontologies from extant sources (e.g.,
 Wikipedia).
 
-\textbf{Wikipedia article on Conditional Random Fields:}
+\textbf{Wikipedia article on Conditional Random Fields:} Used to parse
+or label sequential data --- text, genes, visual.  Can be used to do
+shallow parsing of text.  In vision, can be used to do object
+recognition.  They seem to have been defined in 2001, in a paper by
+Lafferty, McCallum, and Pereira.  It's a very simple idea.  Basically,
+we imagine having two fields $X$ and $Y$ defined on the vertices of a
+graph.  We can imagine that $Y$ satisfies the Markov property in the
+sense that the conditional probabilites $p(Y_v | X, Y_w)$ where $w$
+ranges over all vertices not equal to $v$, are determined entirely by
+the values of $Y_w$ at adjacent vertices $w$ to $v$.  In other words,
+given $X$, the value of $Y$ at a vertex depends (stochastically) only
+on the values of $Y$ at neighbouring vertices.
+
+My sense is that I could explain this better.  I could come up with a
+more vivid explanation.  Probably the way to go is to find a good
+(non-Markov) example.  I might also think a bit about how I explain
+Markov chains.  (Unfortunately, as it stands the Wikipedia article
+isn't so clear --- August 5, 2011.)  There do appear to be some nice
+review articles, though, so I may switch to those.
+
+\textbf{Wikipedia article on Naive Bayes:} It's a probabilistic
+classifier based on applying Bayes' theorem, with some simple
+underlying assumptions. Bayes classifiers can be trained easily in a
+supervised learning setting.  Outperformed by approaches such as
+boosted trees and random forests.
+
+\textbf{Wikipedia article on part-of-speech tagging:}
+
+\textbf{Wikipedia article on Hidden Markov Models:}
+
 
 \textbf{Wikipedia article on disambiguation:}
 
@@ -314,7 +345,7 @@ Other Wikipedia articles: concept mining; web scraping; nutch;
 enterprise search; semantic translation; TIPSTER; faceted search;
 natural language processing; Matthew Correlation Coefficient. F1
 score.  Type I and Type II errors.  Pleonasm and it.  Data warehouse.
-Business Intelligence [2.0].
+Business Intelligence [2.0]; text analytics; lexical semantics.
 
 \section{Papers}
 
@@ -481,8 +512,122 @@ inferences about possible relations.  In short, I've got something of
 a map to think about, but really need to dig down into some of the
 details.
 
-\textbf{Oren Etzioni, Anthony Fader, Janara Christensen, Stephen Soderland,
-and Mausam (2011): Open Information Extraction: the Second Generation}
+\textbf{Hanna M. Wallach, Conditional Random Fields: An Introduction:
+  http://www.cs.umass.edu/~wallach/technical_reports/wallach04conditional.pdf:}
+Starts with the problem of labelling things in sequence.  For
+instance, we might have a sentence and want to label the different
+words in the sentence according to their part of speech.  (A useful
+term is ``POS tagging'', or ``Part-of-speech tagging''.  There is
+apparently quite a bit of agreement on the terminology to be used.)
+The article claims that Hidden Markov Models are often used to do this
+kind of labelling.  The idea is that we have a (sequence of) random
+variable(s) $X$ representing the sentence, and $Y$ is the
+corresponding random variable representing the labelling.  I.e., $X$
+is the input, $Y$ the output.  We now try to find a way of generating
+the joint probability distribution $p(X,Y)$.  What we try to do is to
+come up with a model for $p(Y|X=x)$.  We then choose the $y$ that
+maximizes $p(Y=y|X=x)$; this is our labelling.  To sum up: build a
+probabilistic model for labelling, and then choose the label that
+maximizes the probability.  She explains undirected graphical models;
+then conditional random fields (in terms of ``potential functions'');
+then gives a formula for the probability of a particular label
+sequence in terms of a set of Lagrange multipliers, and a sort of
+energy functional on pairs of labels and observations; we then use
+maximum entropy methods.  
+
+\textbf{Oren Etzioni, Anthony Fader, Janara Christensen, Stephen
+  Soderland, and Mausam (2011): Open Information Extraction: the
+  Second Generation:
+  http://ai.cs.washington.edu/www/media/papers/etzioni-ijcai2011.pdf:}
+Emphasizes the unlexicaled nature of the extractors.  Emphasizes
+question-answering systems.  Says the second generation makes use of a
+novel model of how relations and their arguments are expressed in
+English sentences.  Claims to double precision/recall compared to
+earlier systems.  I like the phrase ``Machine Reading''
+(c.f. ``Machine Teaching'', Hod Lipson).  Again, comes back to the
+``open information extraction'' notion.  Open IE identifies
+\emph{relation phrases}, phrases that denote relations in English
+sentences.  This allows us to get away from a pre-specified
+vocabulary.  ``Open IE systems avoid specific nouns and verbs at all
+costs'': I'm put in mind of the work that's been done on statistical
+machine translation.
+
+What's Open IE been used to do?  Learning selectional preferences
+(shopping, etc); acquiring commonsense knowledge; recognizing rules.
+The rules have also been mapped onto existing ontologies.
+
+The goal of the paper is to develop a second generation open IE
+system. They do this through a linguistic analysis of randomly chosen
+sentences.  The article describes two new open IE systems: ReVerb and
+R2A2.  REVERB has a new relation identifier.  R2A2 adds a new argument
+identifier.
+
+The basic idea of an Open IE system is to take a corpus and produce
+triples (Arg1, Pred, Arg2).  They name three prior systems,
+TEXTRUNNER, WOE, and STATSNOWBALL.  They identify three phases.  Phase
+one is to label the sentences.  This is done using heuristics or
+``distant supervision''.  Phase two is to learn a relation phrase
+extractor, using something like conditional random fields.  Finally,
+phase three is to extract relationships from sentences.
+
+TEXTRUNNER used Naive Bayes.  Later work showed that using conditional
+random fields or Markov Logic Networks led to better classification.
+Apparently, WOE made use of Wikipedia as a training corpus, and that
+led to improvements over TEXTRUNNER.
+
+Problems in previous open information extraction systems: incoherent
+extractions and uninformative extractions.  Apparently, incoherent
+extractions account for 15 or 30 percent of WOE's output (depending on
+phase), and 13 percent of TEXTRUNNER's output.  That's pretty bad: it
+means we're just getting junk a sizeable fraction of the time.
+Similarly, uninformative extractions (where the verb is too generic to
+have much meaning) make up 4-7 percent of extractions.  What this
+means is that a sizeable chunk of what's being extracted is of no use,
+or is actually actively counterproductive.
+
+The idea of REVERB seems to be to introduce a general model of
+relation phrases.  That model is expressed by two constraints: one
+syntactic, and one lexical.  The syntactic constrain requires the POS
+tagging to match a particular tag pattern.  Interesting aspect: they
+go for longest possible match for a relation.  Claim that it
+identifies relation phrases with high precision, and gets most of the
+relation phrases in a small sample corpus.  Of the 15 percent that it
+didn't get they were able to make some interesting observations about
+why they failed.
+
+I find the approach to science being pursued here very interesting.
+The authors are really studying something in depth, trying to build
+different models.  It's hard not to feel that the models being built
+aren't the best, but it's exactly this kind of work that will produce
+better and better models.
+
+Let me move on now to the lexical constraint.  The purpose of this is
+to eliminate useless relations.  The intuition is to get rid of
+relations with very instances in a corpus.
+
+REVERB architecture: Identifies relation phrases that satisfy the
+syntactic and lexical constraints.  Then finds NP arguments for each
+relation phrase, and assigns confidence scores.  The assignation is
+done using a logistic regression classifier trained with examples from
+the web.  REVERB uses OpenNLP for POS tagging and NP chunking.
+
+Given an input sentence, REVERB does (1) relation extraction; and (2)
+argument extraction.  It assumes that the sentence has been POS-tagged
+and NP-chunked.  The relation extraction is done by identifying verbs,
+and then applying the syntactic and lexical constraints.  The argument
+extraction is then done by finding adjacent NPs.
+
+The lexical constraint is implemented through a preprocessing step.
+Basically, we look at a large web corpus, and find frequent relations.
+That's our basic dictionary of relations.
+
+Something I wonder about: the algorithm commits to a lot.  This
+doesn't match my subjective experience of language, which is that we
+consider lots of possibilities in parsing a sentence, and only commit
+slowly; it's a sort of conditional probabilistic building up of
+understanding (``oops, that can't mean that, let's drop back down a
+level and consider the best alternative'').
+
 
 \textbf{Information extraction (Sunita Sarawagi):
 http://portal.acm.org/citation.cfm?id=1498845}
@@ -510,6 +655,9 @@ Entity-relationship diagrams.
 \section{Tools}
 
 What are the standard tools?
+
+OpenNLP is obviously a good starting point for doing things like POS
+tagging and NP chunking.
 
 \textbf{Apache UIMA:}
 
@@ -552,6 +700,27 @@ Weka
 Guava
 
 TextRunner
+
+ReVerb
+
+Tika.
+
+OpenCalais.
+
+AlchemyAPI
+
+
+
+\section{Thoughts for a short course on information extraction}
+
+Named entity recognition:
+
+Evaluation 
+
+Maximum entropy models: What they are, how they can be used to do
+part-of-speech tagging, and named-entity detection.
+
+Coreference resolution: 
 
 \section{Miscellanea}
 
