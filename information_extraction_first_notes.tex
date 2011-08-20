@@ -323,10 +323,71 @@ underlying assumptions. Bayes classifiers can be trained easily in a
 supervised learning setting.  Outperformed by approaches such as
 boosted trees and random forests.
 
-\textbf{Wikipedia article on part-of-speech tagging:}
+Example: is this object an apple?  Consider: is it red, is it round,
+is it 5-20 cm in diameter?  Then take the answer to these questions to
+be \emph{independent} in arriving at some estimate of the likelihood
+this is an apple.  To put it another way, we're using very simple
+statistical modelling, which may be unjustified.
+
+A better example: is this email message spam?  Here's a simple model:
+p(spam) = p(contains spammy words and comes from a spammy ip range) =
+p(contains spammy words) times p(comes from a spammy ip range).  This
+only helps when a feature is determined by the presence of multiple
+categories.  Still, that's often the case.
+
+In fact, the Wikipedia article actually works through an example.  Let
+me go over it.  Let $D$ be a random variable indicating some notion of
+sampling over the space of all documents.  Let $C$ be a random
+variable indicating that $D$ belongs to some class (e.g., the class of
+spam documents, or the class of love letters, or the class of
+documents that aren't spam, etc).  We have:
+\begin{eqnarray}
+p(C|D) = \frac{p(C)}{p(D)} p(D|C).
+\end{eqnarray}
+Let's assume that we can factor $p(D|C)$ as $p(D|C) = \prod_j p(W_j|C)$,
+where $W_j$ is the $j$th word in $D$.  Then let $S$ be the event
+that $D$ is spammy, and $S'$ the event that $D$ is not spammy. We have
+\begin{eqnarray}
+p(S|D) = \frac{p(S)}{p(D)} \prod_j p(W_j|S),
+\end{eqnarray}
+and similarly for $S'$.  Taking the ratio we get:
+\begin{eqnarray}
+  \frac{p(S|D)}{p(S'|D)} = \frac{p(S)}{p(S')} \prod_j \fract{p(W_j|S)}{p(W_j|S')}.
+\end{eqnarray}
+This is terrific. Suppose we take a sample of a few thousand
+documents.  Then we can hand classify them as spam or not spam, and
+get estimates for $p(S)$ and $p(S')$. We can also get estimates of
+$p(W_j|S)$ and $p(W_j|S')$ for common words.  There is a problem,
+which is caused by words which don't appear in the training data.  My
+first thought is to just ignore those; I should come back to this.
+
+Obviously, there's little in this example which has to do with spam or
+not spam --- it's a nice general way of classifying documents!
+
+\textbf{Wikipedia article on part-of-speech tagging:} Also called
+word-category disambiguation.  Makes the observation that many schools
+teach that there are nine parts of speech in English, but POS taggers
+usually have far more categories.  A new term: the ``case'' of a word
+is whether it's subject or object (or something else).
+
+The Brown corpus is completely and near-perfectly tagged.  As such,
+it's a good test data set.  COntains a million words.  Later corpi are
+even larger.  British National Corpus is 100 million words. It
+contains 10 million words of spoken English, half of which is natural
+conversations between members of the public!  Looks like the American
+National Corpus isn't quite as comprehensive.  THe Oxford English
+corpus is even larger, but it's not clear that it has been POS-tagged
+reliably.
+
+The Brown Corpus contains a case with 17 ambiguous words in a row!
+
+The word ``still'' can represent up to 7 parts of speech!
+
+POS algorithms: hidden Markov models; dynamic programming methods.
+There are also methods that actually identify the parts of speech in a
+completely unsupervised way!
 
 \textbf{Wikipedia article on Hidden Markov Models:}
-
 
 \textbf{Wikipedia article on disambiguation:}
 
@@ -336,8 +397,6 @@ boosted trees and random forests.
 
 \textbf{Wikipedia article on unsupervised learning:}
 
-\textbf{Wikipedia article on naive Bayes:}
-
 \textbf{Wikipedia article on Hidden Markov Model:}
 
 
@@ -345,7 +404,8 @@ Other Wikipedia articles: concept mining; web scraping; nutch;
 enterprise search; semantic translation; TIPSTER; faceted search;
 natural language processing; Matthew Correlation Coefficient. F1
 score.  Type I and Type II errors.  Pleonasm and it.  Data warehouse.
-Business Intelligence [2.0]; text analytics; lexical semantics.
+Business Intelligence [2.0]; text analytics; lexical semantics;
+dynamic programming;
 
 \section{Papers}
 
@@ -644,6 +704,9 @@ http://oai.dtic.mil/oai/oai?verb=getRecord\&metadataPrefix=html\&identifier=ADA5
 \textbf{Banko and Brill:}
 
 \textbf{Palantir blog:}
+
+\textbf{Charniak's 1997 review of parsing:}
+http://www.cs.brown.edu/~ec/papers/aimag97.ps
 
 \section{Patents}
 
